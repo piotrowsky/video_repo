@@ -1,7 +1,9 @@
 package pl.edu.agh.video_repo.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -10,10 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Sequence extends PropertyAbstract {
+public class Sequence implements Serializable {
     
     @Id
     private String id;
+    
+    @Embedded
+    private Properties properties;
     
     @Column(nullable = false)
     private Long position;
@@ -79,6 +84,14 @@ public class Sequence extends PropertyAbstract {
 
     public void setDataSet(DataSet dataSet) {
         this.dataSet = dataSet;
+    }
+    
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
     
 }

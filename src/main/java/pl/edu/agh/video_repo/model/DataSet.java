@@ -3,17 +3,21 @@ package pl.edu.agh.video_repo.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class DataSet extends PropertyAbstract {
+public class DataSet implements Serializable {
     
     @Id
     private String id;
 
+    @Embedded
+    private Properties properties;
+    
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "dataSet")
     private Set<Data> data;
     
@@ -53,6 +57,14 @@ public class DataSet extends PropertyAbstract {
 
     public void setSequences(Collection<Sequence> sequences) {
         this.sequences = sequences;
+    }
+    
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
     
 }

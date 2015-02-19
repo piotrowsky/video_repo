@@ -1,6 +1,8 @@
 package pl.edu.agh.video_repo.model;
 
+import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -9,10 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Relation extends PropertyAbstract {
+public class Relation implements Serializable {
     
     @Id
     private String id;
+    
+    @Embedded
+    private Properties properties;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sequence_id")
@@ -66,6 +71,14 @@ public class Relation extends PropertyAbstract {
 
     public void setDataSet(DataSet dataSet) {
         this.dataSet = dataSet;
+    }
+    
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
     
 }

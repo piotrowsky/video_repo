@@ -1,5 +1,7 @@
 package pl.edu.agh.video_repo.model;
 
+import java.io.Serializable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -8,7 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Data extends PropertyAbstract {
+public class Data implements Serializable {
 
     @Id
     private String id;
@@ -16,6 +18,12 @@ public class Data extends PropertyAbstract {
     @Lob
     private byte[] data;
 
+    //@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@JoinColumn(name="id")
+    //@PrimaryKeyJoinColumn
+    //@JoinColumn(name = "properties_id", unique= true, nullable=true, insertable=true, updatable=true)
+    @Embedded
+    private Properties properties;
 //    @ElementCollection   
 ////    @OneToMany(cascade = CascadeType.ALL)
 //    @MapKey(name = "key")
@@ -25,6 +33,14 @@ public class Data extends PropertyAbstract {
 //        joinColumns = @JoinColumn(name = "id"))
 //    @MapKey(name = "key_z_dupy")
 //    @Column(name = "chuj")
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sequence_id")

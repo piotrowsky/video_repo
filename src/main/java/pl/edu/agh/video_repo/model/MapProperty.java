@@ -12,7 +12,6 @@ public class MapProperty implements Serializable {
     @Id
     private String id;
 
-    //   @Column(value = "test", nullable = false)
     @Lob
     @Column(nullable = false)
     private byte[] value;
