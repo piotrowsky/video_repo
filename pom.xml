@@ -111,6 +111,11 @@
             <artifactId>dropwizard-hibernate</artifactId>
             <version>0.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9</version>
+        </dependency>
     </dependencies>
 
 </project>
