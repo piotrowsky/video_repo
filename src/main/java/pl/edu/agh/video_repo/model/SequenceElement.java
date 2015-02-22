@@ -3,14 +3,17 @@ package pl.edu.agh.video_repo.model;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class SequenceElement implements Serializable {
     @Id
     private Long id;
     
+    @OneToOne
     private Sequence parent;
     
+    @OneToOne
     private RepositoryEntity child;
     
     private Long sequenceNumber;
