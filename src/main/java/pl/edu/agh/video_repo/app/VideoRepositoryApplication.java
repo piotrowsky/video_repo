@@ -8,15 +8,16 @@ import io.dropwizard.setup.Environment;
 import java.util.Arrays;
 import javax.persistence.Entity;
 import org.reflections.Reflections;
-import pl.edu.agh.video_repo.resources.HelloWorldResource;
+import pl.edu.agh.video_repo.dao.ResourceDAO;
+import pl.edu.agh.video_repo.resources.ResourceEntityResource;
 
 public class VideoRepositoryApplication extends Application<VideoRepositoryConfiguration> {
 
+    private final HibernateBundle<VideoRepositoryConfiguration> hibernate = createHibernateBundle();
+    
     public static void main(String[] args) throws Exception {
         new VideoRepositoryApplication().run(args);
     }
-
-    private Class[] c = new Reflections("pl.edu.agh.video_repo.model").getTypesAnnotatedWith(Entity.class, true).toArray(new Class[]{});
 
     @Override
     public String getName() {
@@ -25,13 +26,13 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
 
     @Override
     public void initialize(Bootstrap<VideoRepositoryConfiguration> bootstrap) {
-        bootstrap.addBundle(createHibernateBundle());
+        bootstrap.addBundle(hibernate);
     }
 
     @Override
     public void run(VideoRepositoryConfiguration configuration,
             Environment environment) throws ClassNotFoundException {
-        environment.jersey().register(new HelloWorldResource());
+        environment.jersey().register(new ResourceEntityResource(new ResourceDAO(hibernate.getSessionFactory())));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {

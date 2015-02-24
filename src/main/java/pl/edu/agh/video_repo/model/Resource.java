@@ -5,14 +5,18 @@ import javax.persistence.Entity;
 @Entity
 public class Resource extends RepositoryEntity {
     // to jest Data
-    private Byte[] data;
+    private byte[] content;
 
-    public Byte[] getData() {
-        return data;
+    public Resource(byte[] content) {
+        this.content = content;
     }
 
-    public void setData(Byte[] data) {
-        this.data = data;
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] data) {
+        this.content = data;
     }
     
 }
