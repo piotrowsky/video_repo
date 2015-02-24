@@ -21,8 +21,7 @@ public class RepositoryEntity implements Serializable {
     
     @OneToMany
     protected List<Property> properties;
-    
-    @OneToOne
+
     protected RepositoryEntityType type;
 
     public Long getGlobalId() {
