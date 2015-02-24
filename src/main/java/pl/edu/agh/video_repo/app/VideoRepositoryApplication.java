@@ -9,7 +9,9 @@ import java.util.Arrays;
 import javax.persistence.Entity;
 import org.reflections.Reflections;
 import pl.edu.agh.video_repo.dao.ResourceDAO;
+import pl.edu.agh.video_repo.dao.SequenceDAO;
 import pl.edu.agh.video_repo.resources.ResourceEntityResource;
+import pl.edu.agh.video_repo.resources.SequenceResource;
 
 public class VideoRepositoryApplication extends Application<VideoRepositoryConfiguration> {
 
@@ -33,6 +35,7 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
     public void run(VideoRepositoryConfiguration configuration,
             Environment environment) throws ClassNotFoundException {
         environment.jersey().register(new ResourceEntityResource(new ResourceDAO(hibernate.getSessionFactory())));
+        environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory())));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {
