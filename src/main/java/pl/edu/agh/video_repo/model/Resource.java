@@ -7,6 +7,8 @@ public class Resource extends RepositoryEntity {
     // to jest Data
     private byte[] content;
 
+    public Resource() {}
+
     public Resource(byte[] content) {
         this.content = content;
     }

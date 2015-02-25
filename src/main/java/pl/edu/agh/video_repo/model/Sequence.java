@@ -8,13 +8,13 @@ import javax.persistence.OneToMany;
 public class Sequence extends RepositoryEntity {
     // maping przez SequenceELement
     @OneToMany
-    private List<RepositoryEntity> elements;
+    private List<SequenceElement> elements;
 
-    public List<RepositoryEntity> getElements() {
+    public List<SequenceElement> getElements() {
         return elements;
     }
 
-    public void setElements(List<RepositoryEntity> elements) {
+    public void setElements(List<SequenceElement> elements) {
         this.elements = elements;
     }
     

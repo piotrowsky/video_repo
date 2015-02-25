@@ -11,6 +11,10 @@ public class SequenceDAO extends AbstractDAO<Sequence>{
         super(sessionFactory);
     }
 
+    public Sequence findById(Long id) {
+        return get(id);
+    }
+
     public long create(Sequence sequence) {
         return persist(sequence).getGlobalId();
     }
