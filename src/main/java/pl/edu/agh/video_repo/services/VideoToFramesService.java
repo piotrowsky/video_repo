@@ -10,7 +10,6 @@ package pl.edu.agh.video_repo.services;
  * @author Karol
  */
 
-import java.awt.image.BufferedImage;
 import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.IContainer;

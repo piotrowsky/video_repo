@@ -22,37 +22,34 @@ import pl.edu.agh.video_repo.services.VideoToFramesService;
  */
 @Path("/video")
 public class VideoResource {
-    
+
     public VideoResource(){
-        
+
     }
     /*
-        To upload resource by curl: 
-        curl -F "file=@(path to local file)" http://localhost:8080/repo/video/upload
-    curl -F "file=@(video1.avi)" http://localhost:8080/repo/video/upload
-    */
+     To upload resource by curl: 
+     curl -F "file=@(path to local file)" http://localhost:8080/repo/video/upload
+     curl -F "file=@(video1.avi)" http://localhost:8080/repo/video/upload
+     */
     @POST
     @UnitOfWork
-    @Path("/upload")
+    @Path("/create")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response create(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
-        
+
         try {
-            
+
             VideoToFramesService.Convert(0.04, uploadedInputStream, "frames");
-            
-            
-            
+
 //            
 //            Resource resource = new Resource(ByteStreams.toByteArray(uploadedInputStream));
 //            dao.create(resource);
-        } catch(Exception ex) {
-            return Response.status(500).entity(ex).build();
+        } catch (Exception ex) {
+            return Response.status(500).entity("fail").build();
         }
-        
+
         return Response.status(200).entity("OK").build();
-        
     }
 }
