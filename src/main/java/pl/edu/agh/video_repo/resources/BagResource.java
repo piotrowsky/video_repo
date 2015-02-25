@@ -2,10 +2,7 @@ package pl.edu.agh.video_repo.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.HibernateException;
-import pl.edu.agh.video_repo.dao.BagDAO;
-import pl.edu.agh.video_repo.dao.ResourceDAO;
-import pl.edu.agh.video_repo.dao.SequenceDAO;
-import pl.edu.agh.video_repo.dao.SequenceElementDAO;
+import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.model.*;
 
 import javax.ws.rs.FormParam;
@@ -19,11 +16,13 @@ public class BagResource {
 
     private final BagDAO bagDAO;
     private final ResourceDAO resourceDAO;
+    private final BagElementDAO bagElementDAO;
 
 
-    public BagResource(ResourceDAO resourceDAO, BagDAO bagDAO) {
+    public BagResource(ResourceDAO resourceDAO, BagDAO bagDAO, BagElementDAO bagElementDAO) {
         this.resourceDAO = resourceDAO;
         this.bagDAO = bagDAO;
+        this.bagElementDAO = bagElementDAO;
     }
 
     @POST
@@ -34,13 +33,34 @@ public class BagResource {
         try {
             Bag bag = new Bag();
             bag.setType(RepositoryEntityType.BAG);
-            id = bagDAO.create(bag);
+            id = bagDAO.createOrUpdate(bag);
 
         } catch (HibernateException ex) {
             return Response.status(500).entity("Failed persiting Bag entity").build();
         }
 
         return Response.status(200).entity("Bag with id " + id + " created").build();
+    }
+
+    @POST
+    @UnitOfWork
+    @Path("/addResource")
+    public Response addFrame(@FormParam("resourceID") long resourceID, @FormParam("bagID") long bagID) {
+
+        try {
+            Bag bag = bagDAO.findById(bagID);
+            Resource resource = resourceDAO.findById(resourceID);
+            BagElement bagElement = new BagElement();
+            bagElement.setChild(resource);
+            bagElement.setParent(bag);
+            bagElementDAO.createOrUpdate(bagElement);
+            bag.getElements().add(bagElement);
+
+        } catch (HibernateException ex) {
+            return Response.status(500).entity("Failed adding frame to sequence").build();
+        }
+
+        return Response.status(200).entity("Bag with id " + " created").build();
     }
 
 }

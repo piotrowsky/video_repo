@@ -8,10 +8,7 @@ import io.dropwizard.setup.Environment;
 import java.util.Arrays;
 import javax.persistence.Entity;
 import org.reflections.Reflections;
-import pl.edu.agh.video_repo.dao.BagDAO;
-import pl.edu.agh.video_repo.dao.ResourceDAO;
-import pl.edu.agh.video_repo.dao.SequenceDAO;
-import pl.edu.agh.video_repo.dao.SequenceElementDAO;
+import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.resources.BagResource;
 import pl.edu.agh.video_repo.resources.ResourceEntityResource;
 import pl.edu.agh.video_repo.resources.SequenceResource;
@@ -40,9 +37,10 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         ResourceDAO resourceDAO = new ResourceDAO(hibernate.getSessionFactory());
         SequenceElementDAO sequenceElementDAO = new SequenceElementDAO(hibernate.getSessionFactory());
         BagDAO bagDAO = new BagDAO(hibernate.getSessionFactory());
+        BagElementDAO bagElementDAO = new BagElementDAO(hibernate.getSessionFactory());
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
         environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
-        environment.jersey().register(new BagResource(resourceDAO, bagDAO));
+        environment.jersey().register(new BagResource(resourceDAO, bagDAO, bagElementDAO));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {

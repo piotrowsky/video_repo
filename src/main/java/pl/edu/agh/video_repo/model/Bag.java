@@ -8,13 +8,13 @@ import javax.persistence.OneToMany;
 public class Bag extends RepositoryEntity {
     // maping przez BagELement
     @OneToMany
-    private Set<RepositoryEntity> elements;
+    private Set<BagElement> elements;
 
-    public Set<RepositoryEntity> getElements() {
+    public Set<BagElement> getElements() {
         return elements;
     }
 
-    public void setElements(Set<RepositoryEntity> elements) {
+    public void setElements(Set<BagElement> elements) {
         this.elements = elements;
     }
 }

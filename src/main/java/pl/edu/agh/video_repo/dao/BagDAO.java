@@ -15,7 +15,7 @@ public class BagDAO extends AbstractDAO<Bag>{
         return get(id);
     }
 
-    public long create(Bag bag) {
+    public long createOrUpdate(Bag bag) {
         return persist(bag).getGlobalId();
     }
 }
