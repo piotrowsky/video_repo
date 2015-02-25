@@ -5,11 +5,13 @@ import org.hibernate.HibernateException;
 import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.model.*;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Path("/bag")
 public class BagResource {
@@ -60,7 +62,26 @@ public class BagResource {
             return Response.status(500).entity("Failed adding frame to sequence").build();
         }
 
-        return Response.status(200).entity("Bag with id " + " created").build();
+        return Response.status(200).entity("Added resource to bag").build();
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Long> getBagIds(@PathParam("id") Long id) {
+        List<Long> ids = new LinkedList<>();
+        try {
+            Bag bag = bagDAO.findById(id);
+            Set<BagElement> bagElements = bag.getElements();
+            for(BagElement bagElement : bagElements){
+                ids.add(bagElement.getChild().getGlobalId());
+            }
+        } catch (HibernateException ex) {
+            return new LinkedList<>();
+        }
+
+        return ids;
     }
 
 }
