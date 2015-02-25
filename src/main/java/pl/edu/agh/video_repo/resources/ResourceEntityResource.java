@@ -36,16 +36,18 @@ public class ResourceEntityResource {
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
 
+        long id;
+        
         try {
             Resource resource = new Resource(ByteStreams.toByteArray(uploadedInputStream));
-            dao.create(resource);
+            id = dao.create(resource);
         } catch(IOException ex) {
             return Response.status(500).entity("Failed converting Resource to byte array").build();
         } catch(HibernateException ex) {
             return Response.status(500).entity("Failed persiting Resource entity").build();
         }
         
-        return Response.status(200).entity("OK").build();
+        return Response.status(200).entity(Long.toString(id)).build();
     }
 
 }
