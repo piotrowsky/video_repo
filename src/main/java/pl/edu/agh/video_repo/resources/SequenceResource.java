@@ -10,10 +10,12 @@ import pl.edu.agh.video_repo.model.Resource;
 import pl.edu.agh.video_repo.model.Sequence;
 import pl.edu.agh.video_repo.model.SequenceElement;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Path("/sequence")
@@ -71,7 +73,28 @@ public class SequenceResource {
             return Response.status(500).entity("Failed adding frame to sequence").build();
         }
 
-        return Response.status(200).entity("Sequence with id " + " created").build();
+        return Response.status(200).entity("Resource added to sequence").build();
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Long> getSequenceIds(@PathParam("id") Long id) {
+        List<Long> ids = new LinkedList<>();
+        try {
+            Sequence sequence = sequenceDAO.findById(id);
+            List<SequenceElement> sequenceElements = sequence.getElements();
+            Collections.sort(sequenceElements,
+                    (SequenceElement e1, SequenceElement e2) -> e1.getSequenceNumber().compareTo(e1.getSequenceNumber()));
+            for(SequenceElement sequenceElement : sequenceElements){
+                ids.add(sequenceElement.getChild().getGlobalId());
+            }
+        } catch (HibernateException ex) {
+            return new LinkedList<>();
+        }
+
+        return ids;
     }
 
     private void updateSequenceElements(List<SequenceElement> elements, long beforeWhichOne) {
