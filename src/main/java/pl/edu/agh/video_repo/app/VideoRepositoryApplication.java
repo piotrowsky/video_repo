@@ -12,6 +12,7 @@ import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.resources.BagResource;
 import pl.edu.agh.video_repo.resources.ResourceEntityResource;
 import pl.edu.agh.video_repo.resources.SequenceResource;
+import pl.edu.agh.video_repo.resources.VideoResource;
 
 public class VideoRepositoryApplication extends Application<VideoRepositoryConfiguration> {
 
@@ -41,6 +42,7 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
         environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
         environment.jersey().register(new BagResource(resourceDAO, bagDAO, bagElementDAO));
+        environment.jersey().register(new VideoResource());
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {
