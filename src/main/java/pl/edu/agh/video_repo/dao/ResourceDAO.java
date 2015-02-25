@@ -3,7 +3,6 @@ package pl.edu.agh.video_repo.dao;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.SessionFactory;
 import pl.edu.agh.video_repo.model.Resource;
-import pl.edu.agh.video_repo.model.Sequence;
 
 public class ResourceDAO extends AbstractDAO<Resource> {
 
