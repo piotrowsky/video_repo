@@ -91,6 +91,13 @@
     
     <dependencies>
         <dependency>
+            <groupId>xuggle</groupId>
+            <artifactId>xuggle-xuggler</artifactId>
+            <version>5.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/xuggle-xuggler-5.4.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>0.7.1</version>
