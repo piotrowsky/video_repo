@@ -7,6 +7,8 @@ public class Resource extends RepositoryEntity {
     // to jest Data
     private byte[] content;
 
+    private String fileName;
+
     public Resource() {}
 
     public Resource(byte[] content) {
@@ -20,5 +22,12 @@ public class Resource extends RepositoryEntity {
     public void setContent(byte[] data) {
         this.content = data;
     }
-    
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }
