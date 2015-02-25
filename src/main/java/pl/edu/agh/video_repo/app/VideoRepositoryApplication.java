@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import org.reflections.Reflections;
 import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.resources.BagResource;
+import pl.edu.agh.video_repo.resources.RepositoryEntityResource;
 import pl.edu.agh.video_repo.resources.ResourceEntityResource;
 import pl.edu.agh.video_repo.resources.SequenceResource;
 
@@ -37,10 +38,13 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         ResourceDAO resourceDAO = new ResourceDAO(hibernate.getSessionFactory());
         SequenceElementDAO sequenceElementDAO = new SequenceElementDAO(hibernate.getSessionFactory());
         BagDAO bagDAO = new BagDAO(hibernate.getSessionFactory());
+        PropertyDAO propertyDAO = new PropertyDAO(hibernate.getSessionFactory());
+        PropertyKeyDAO propertyKeyDAO = new PropertyKeyDAO(hibernate.getSessionFactory());
         BagElementDAO bagElementDAO = new BagElementDAO(hibernate.getSessionFactory());
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
         environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
         environment.jersey().register(new BagResource(resourceDAO, bagDAO, bagElementDAO));
+        environment.jersey().register(new RepositoryEntityResource(new RepositoryEntityDAO(hibernate.getSessionFactory()), propertyKeyDAO, propertyDAO));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {
