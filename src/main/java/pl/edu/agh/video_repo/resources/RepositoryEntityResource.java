@@ -30,7 +30,7 @@ public class RepositoryEntityResource {
     @POST
     @UnitOfWork
     @Path("/addProperty")
-    public Response create(@FormParam("repoEntityID") long repositoryID, @FormParam("keyName") String keyName,
+    public Response addProperty(@FormParam("repoEntityID") long repositoryID, @FormParam("keyName") String keyName,
                            @FormParam("dataType") String dataType, @FormParam("value") String value) {
         try {
             RepositoryEntity repositoryEntity = repositoryEntityDAO.findById(repositoryID);
@@ -52,6 +52,48 @@ public class RepositoryEntityResource {
         }
 
         return Response.status(200).entity("Added property").build();
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/getProperty/{repoEntityID}/{key}")
+    public String getProperty(@PathParam("repoEntityID") long repositoryID, @PathParam("key") String key) {
+        String value = "";
+        try {
+            RepositoryEntity repositoryEntity = repositoryEntityDAO.findById(repositoryID);
+            List<Property> properties = repositoryEntity.getProperties();
+            for (Property property : properties) {
+                if(property.getKey().getName().equals(key)){
+                    value = property.getValue();
+                    break;
+                }
+            }
+        } catch (HibernateException ex) {
+            return "Error";
+        }
+
+        return value;
+    }
+
+    @GET
+    @UnitOfWork
+    @Path("/getKeys/{repoEntityID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<String> getKeys(@PathParam("repoEntityID") long repositoryID) {
+        List<String> keys = new LinkedList<>();
+        try {
+            RepositoryEntity repositoryEntity = repositoryEntityDAO.findById(repositoryID);
+            List<Property> properties = repositoryEntity.getProperties();
+            for (Property property : properties) {
+                keys.add(property.getKey().getName());
+            }
+        } catch (HibernateException ex) {
+            List<String> error = new LinkedList<>();
+            error.add(ex.getMessage());
+            return error;
+        }
+
+        return keys;
     }
 
 }
