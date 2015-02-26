@@ -8,7 +8,6 @@ import pl.edu.agh.video_repo.model.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,12 +16,12 @@ import java.util.Set;
 public class BagResource {
 
     private final BagDAO bagDAO;
-    private final ResourceDAO resourceDAO;
+    private final RepositoryEntityDAO repositoryEntityDAO;
     private final BagElementDAO bagElementDAO;
 
 
-    public BagResource(ResourceDAO resourceDAO, BagDAO bagDAO, BagElementDAO bagElementDAO) {
-        this.resourceDAO = resourceDAO;
+    public BagResource(RepositoryEntityDAO repositoryEntityDAO, BagDAO bagDAO, BagElementDAO bagElementDAO) {
+        this.repositoryEntityDAO = repositoryEntityDAO;
         this.bagDAO = bagDAO;
         this.bagElementDAO = bagElementDAO;
     }
@@ -47,13 +46,13 @@ public class BagResource {
     @POST
     @UnitOfWork
     @Path("/addResource")
-    public Response addFrame(@FormParam("resourceID") long resourceID, @FormParam("bagID") long bagID) {
+    public Response addFrame(@FormParam("repoEntityID") long repoEntityID, @FormParam("bagID") long bagID) {
 
         try {
             Bag bag = bagDAO.findById(bagID);
-            Resource resource = resourceDAO.findById(resourceID);
+            RepositoryEntity repositoryEntity = repositoryEntityDAO.findById(repoEntityID);
             BagElement bagElement = new BagElement();
-            bagElement.setChild(resource);
+            bagElement.setChild(repositoryEntity);
             bagElement.setParent(bag);
             bagElementDAO.createOrUpdate(bagElement);
             bag.getElements().add(bagElement);
@@ -62,7 +61,7 @@ public class BagResource {
             return Response.status(500).entity("Failed adding frame to sequence").build();
         }
 
-        return Response.status(200).entity("Added resource to bag").build();
+        return Response.status(200).entity("Added Repository Entity to bag").build();
     }
 
     @GET

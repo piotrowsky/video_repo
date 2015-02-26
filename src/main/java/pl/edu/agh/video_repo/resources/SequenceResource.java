@@ -2,18 +2,15 @@ package pl.edu.agh.video_repo.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.HibernateException;
+import pl.edu.agh.video_repo.dao.RepositoryEntityDAO;
 import pl.edu.agh.video_repo.dao.ResourceDAO;
 import pl.edu.agh.video_repo.dao.SequenceDAO;
 import pl.edu.agh.video_repo.dao.SequenceElementDAO;
-import pl.edu.agh.video_repo.model.RepositoryEntityType;
-import pl.edu.agh.video_repo.model.Resource;
-import pl.edu.agh.video_repo.model.Sequence;
-import pl.edu.agh.video_repo.model.SequenceElement;
+import pl.edu.agh.video_repo.model.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,12 +19,12 @@ import java.util.List;
 public class SequenceResource {
 
     private final SequenceDAO sequenceDAO;
-    private final ResourceDAO resourceDAO;
+    private final RepositoryEntityDAO repositoryEntityDAO;
     private final SequenceElementDAO sequenceElementDAO;
 
-    public SequenceResource(SequenceDAO sequenceDAO, ResourceDAO resourceDAO, SequenceElementDAO sequenceElementDAO) {
+    public SequenceResource(SequenceDAO sequenceDAO, RepositoryEntityDAO repositoryEntityDAO, SequenceElementDAO sequenceElementDAO) {
         this.sequenceDAO = sequenceDAO;
-        this.resourceDAO = resourceDAO;
+        this.repositoryEntityDAO = repositoryEntityDAO;
         this.sequenceElementDAO = sequenceElementDAO;
     }
 
@@ -54,16 +51,16 @@ public class SequenceResource {
 
     @POST
     @UnitOfWork
-    @Path("/addResource")
-    public Response addFrame(@FormParam("resourceID") long resourceID, @FormParam("sequenceID") long sequenceID,
+    @Path("/addRepositoryEntity")
+    public Response addRepositoryEntity(@FormParam("repoEntityID") long repoEntityID, @FormParam("sequenceID") long sequenceID,
                              @FormParam("beforeWhichOne") long beforeWhichOne) {
 
         try {
             Sequence sequence = sequenceDAO.findById(sequenceID);
-            Resource resource = resourceDAO.findById(resourceID);
+            RepositoryEntity repositoryEntity = repositoryEntityDAO.findById(repoEntityID);
             SequenceElement sequenceElement = new SequenceElement();
             sequenceElement.setSequenceNumber(beforeWhichOne);
-            sequenceElement.setChild(resource);
+            sequenceElement.setChild(repositoryEntity);
             sequenceElement.setParent(sequence);
             updateSequenceElements(sequence.getElements(), beforeWhichOne);
             sequenceElementDAO.createOrUpdate(sequenceElement);
@@ -73,7 +70,7 @@ public class SequenceResource {
             return Response.status(500).entity("Failed adding frame to sequence").build();
         }
 
-        return Response.status(200).entity("Resource added to sequence").build();
+        return Response.status(200).entity("Repository Entity added to sequence").build();
     }
 
     @GET

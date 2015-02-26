@@ -41,10 +41,11 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         PropertyDAO propertyDAO = new PropertyDAO(hibernate.getSessionFactory());
         PropertyKeyDAO propertyKeyDAO = new PropertyKeyDAO(hibernate.getSessionFactory());
         BagElementDAO bagElementDAO = new BagElementDAO(hibernate.getSessionFactory());
+        RepositoryEntityDAO repositoryEntityDAO = new RepositoryEntityDAO(hibernate.getSessionFactory());
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
-        environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
-        environment.jersey().register(new BagResource(resourceDAO, bagDAO, bagElementDAO));
-        environment.jersey().register(new RepositoryEntityResource(new RepositoryEntityDAO(hibernate.getSessionFactory()), propertyKeyDAO, propertyDAO));
+        environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), repositoryEntityDAO, sequenceElementDAO));
+        environment.jersey().register(new BagResource(repositoryEntityDAO, bagDAO, bagElementDAO));
+        environment.jersey().register(new RepositoryEntityResource(repositoryEntityDAO, propertyKeyDAO, propertyDAO));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {
