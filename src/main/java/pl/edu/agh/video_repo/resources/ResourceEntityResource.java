@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import pl.edu.agh.video_repo.model.RepositoryEntityType;
 
 @Path("/resource")
 public class ResourceEntityResource {
@@ -39,6 +40,7 @@ public class ResourceEntityResource {
 
         try {
             Resource resource = new Resource(ByteStreams.toByteArray(uploadedInputStream));
+            resource.setType(RepositoryEntityType.RESOURCE);
             resource.setFileName(fileDetail.getFileName());
             id = dao.create(resource);
         } catch (IOException ex) {

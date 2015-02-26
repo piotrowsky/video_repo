@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import org.reflections.Reflections;
 import pl.edu.agh.video_repo.dao.*;
 import pl.edu.agh.video_repo.resources.BagResource;
+import pl.edu.agh.video_repo.resources.BinaryRelationResource;
 import pl.edu.agh.video_repo.resources.RepositoryEntityResource;
 import pl.edu.agh.video_repo.resources.ResourceEntityResource;
 import pl.edu.agh.video_repo.resources.SequenceResource;
@@ -43,12 +44,14 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         PropertyKeyDAO propertyKeyDAO = new PropertyKeyDAO(hibernate.getSessionFactory());
         BagElementDAO bagElementDAO = new BagElementDAO(hibernate.getSessionFactory());
         RepositoryEntityDAO repositoryEntityDAO = new RepositoryEntityDAO(hibernate.getSessionFactory());
+        BinaryRelationDAO binaryRelationDAO = new BinaryRelationDAO(hibernate.getSessionFactory());
         
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
         environment.jersey().register(new VideoResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
         environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), repositoryEntityDAO, sequenceElementDAO));
         environment.jersey().register(new BagResource(repositoryEntityDAO, bagDAO, bagElementDAO));
         environment.jersey().register(new RepositoryEntityResource(repositoryEntityDAO, propertyKeyDAO, propertyDAO));
+        environment.jersey().register(new BinaryRelationResource(repositoryEntityDAO, binaryRelationDAO));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {
