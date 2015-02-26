@@ -42,7 +42,7 @@ public class VideoRepositoryApplication extends Application<VideoRepositoryConfi
         environment.jersey().register(new ResourceEntityResource(resourceDAO));
         environment.jersey().register(new SequenceResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
         environment.jersey().register(new BagResource(resourceDAO, bagDAO, bagElementDAO));
-        environment.jersey().register(new VideoResource());
+        environment.jersey().register(new VideoResource(new SequenceDAO(hibernate.getSessionFactory()), resourceDAO, sequenceElementDAO));
     }
 
     private HibernateBundle<VideoRepositoryConfiguration> createHibernateBundle() {

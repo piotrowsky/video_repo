@@ -12,36 +12,20 @@ package pl.edu.agh.video_repo.services;
 
 import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.IContainer;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import pl.edu.agh.video_repo.services.helpers.ImageSnapListener;
 
 public class VideoToFramesService  {
-//
-//    public static void Convert(double secondsBetweenFrame, String inputFilePath, String outputFilePrefix){
-//        IMediaReader mediaReader = ToolFactory.makeReader(inputFilePath);
-//        mediaReader.setBufferedImageTypeToGenerate(BufferedImage.TYPE_3BYTE_BGR);
-//        mediaReader.addListener(new ImageSnapListener(secondsBetweenFrame, outputFilePrefix));
-//        while (mediaReader.readPacket() == null) ;
-//
-//    }
-
-    public static void Convert(double secondsBetweenFrame, InputStream videoStream, String outputDir){
+ public static void Convert(double secondsBetweenFrame, String inputFilePath, String outputDir){
         
         File file = new File(outputDir);
         file.mkdir();
         
-        IContainer container = IContainer.make();
-        container.open(videoStream, null);
-        
-        IMediaReader mediaReader = ToolFactory.makeReader(container);
+        IMediaReader mediaReader = ToolFactory.makeReader(inputFilePath);
+        mediaReader.setBufferedImageTypeToGenerate(BufferedImage.TYPE_3BYTE_BGR);
         mediaReader.addListener(new ImageSnapListener(secondsBetweenFrame, outputDir + "\\"));
-        while (mediaReader.readPacket() == null);
+        while (mediaReader.readPacket() == null) ;
+
     }
-    
-//    public static void main(String[] args) {
-//        VideoToFramesService.Convert(0.04, "avi.avi", "frames");
-//
-//    }
 }

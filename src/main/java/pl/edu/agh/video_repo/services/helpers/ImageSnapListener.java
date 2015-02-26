@@ -21,10 +21,10 @@ public class ImageSnapListener extends MediaListenerAdapter {
 
     // The video stream index, used to ensure we display frames from one and
     // only one video stream from the media container.
-    private static int mVideoStreamIndex = -1;
+    private int mVideoStreamIndex = -1;
 
     // Time of last frame write
-    private static long mLastPtsWrite = Global.NO_PTS;
+    private long mLastPtsWrite = Global.NO_PTS;
 
     private long microSecondsBetweenFrames;
     private String outputFilePrefix;
