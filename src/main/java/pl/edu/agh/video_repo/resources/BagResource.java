@@ -45,7 +45,7 @@ public class BagResource {
 
     @POST
     @UnitOfWork
-    @Path("/addResource")
+    @Path("/addRepositoryEntity")
     public Response addFrame(@FormParam("repoEntityID") long repoEntityID, @FormParam("bagID") long bagID) {
 
         try {
